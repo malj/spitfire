@@ -58,7 +58,7 @@ describe('Model.transform', () => {
 
     it('should ignore function properties', done => {
         const model = Model.transform({
-            foo: 'bar', 
+            foo: 'bar',
             myMethod: new Function()
         })
         model.state$.subscribe(state => {

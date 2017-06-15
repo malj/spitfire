@@ -61,29 +61,29 @@
         var keys = Object.keys(source).filter(function (key) {
             return typeof source[key] !== 'function'
         })
-        
+
         var prev = keys.reduce(function (state, key) {
             state[key] = null
             return state
         }, {})
-        
+
         var proxies = keys.map(function (key) {
             return createProxy(source, key)
         })
         .concat(function () {
             var values = Array.prototype.slice.call(arguments)
-            
+
             var next = values.reduce(function (state, value, i) {
                 var key = keys[i]
                 state[key] = value
                 return state
             }, {})
-            
+
             var state = {
                 prev: prev,
                 next: next
             }
-            
+
             prev = next
             return state
         })

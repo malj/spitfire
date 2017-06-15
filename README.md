@@ -19,15 +19,6 @@ npm install spitfirejs
 
 Convenience class for extension and lazy model transformation. A `Model` instance gets transformed into a reactive data model when its prototype property `state$` is called for the first time. If a `source` object is available in the constructor, its own enumerable properties are copied onto the new `Model` instance.
 
-### Model.transform(source)
-
-Transforms the `source` object into a reactive model by redefining its own enumerable non-function properties into proxies which handle values via getters and setters using RxJS `BehaviorSubject` instances. The combined latest properties are accessible via the `state$` property, an RxJS `Observable` stream of previous and next states. 
-Returns the frozen `source` object.
-
-## Initialization
-
-### Convenience class (lazy)
-
 ```javascript
 import {Model} from 'spitfirejs'
 
@@ -38,7 +29,10 @@ model.state$  // => Observable<object>; the property `state$` gets called for th
 model.hasOwnProperty('state$')  // => true; the model is now transformed
 ```
 
-### Mutating method
+### Model.transform(source)
+
+Transforms the `source` object into a reactive model by redefining its own enumerable non-function properties into proxies which handle values via getters and setters using RxJS `BehaviorSubject` instances. The combined latest properties are accessible via the `state$` property, an RxJS `Observable` stream of previous and next states.
+Returns the frozen `source` object.
 
 ```javascript
 import {Model} from 'spitfirejs'
@@ -62,11 +56,11 @@ class Counter extends Model {
         super()
         this.count = 0
     }
-    
+
     increment() {
         this.count += 1
     }
-    
+
     decrement() {
         this.count -= 1
     }
@@ -75,10 +69,10 @@ class Counter extends Model {
 const counter = new Counter()  // => Counter { count: 0 }
 
 const subscriber1 = counter.state$.subscribe(state => {
-    console.log(state.next.count) 
+    console.log(state.next.count)
 })  // `0` is logged on subscription
 counter.increment()  // `1` is logged on change
-counter.decrement()  // `0` is logged on change 
+counter.decrement()  // `0` is logged on change
 
 subscriber1.unsubscribe()
 counter.increment()  // the count is incremented, but nothing is logged because there are no subscribers
@@ -102,7 +96,7 @@ class Movie extends Model {
         this.name = name
         this.lastWatched = null
     }
-    
+
     watch() {
         this.lastWatched = new Date()
     }
