@@ -1,21 +1,21 @@
 ;(function (global, factory) {
     /* istanbul ignore next */
-    if (typeof exports === 'object') {
+    if (typeof define === 'function' && define.amd) {
+        define(['rxjs'], factory)
+    }
+    else if (typeof module === 'object' && module.exports) {
         var Rx = {
             Observable: require('rxjs/Observable').Observable,
             BehaviorSubject: require('rxjs/BehaviorSubject').BehaviorSubject
         }
         require('rxjs/add/observable/combineLatest')
-
         module.exports = factory(Rx)
-    }
-    else if (typeof define === 'function' && define.amd) {
-        define('spitfire', ['rxjs'], factory)
     }
     else {
         global.spitfire = factory(global.Rx)
     }
 }(this, function (Rx) {
+    'use strict'
 
     function Model(source) {
         if (!(this instanceof Model)) {
@@ -62,12 +62,9 @@
             return typeof source[key] !== 'function'
         })
 
-        var prev = keys.reduce(function (state, key) {
-            state[key] = null
-            return state
-        }, {})
-
+        var prev = {}
         var proxies = keys.map(function (key) {
+            prev[key] = null
             return createProxy(source, key)
         })
         .concat(function () {
@@ -81,10 +78,9 @@
 
             var state = {
                 prev: prev,
-                next: next
+                next: prev = next
             }
 
-            prev = next
             return state
         })
 

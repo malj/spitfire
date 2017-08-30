@@ -1,3 +1,5 @@
+***DEPRECATED: Please use [Observux](https://github.com/malj/observux) instead. It has the same functionality with a simpler API.***
+
 # Spitfire.js
 
 A tiny reactive data model library.
@@ -110,16 +112,7 @@ const movie3 = new Movie("Monty Python's The Meaning of Life")
 Observable.combineLatest(movie1.state$, movie2.state$, movie3.state$)
     .map(states => states.map(state => state.next))  // Discard the previous state
     .filter(movies => movies.every(movie => movie.lastWatched))  // Proceed only if all movies have been watched
-    .map(movies => movies.sort((a, b) => {
-        switch (true) {
-        case a.lastWatched > b.lastWatched:
-            return 1
-        case a.lastWatched < b.lastWatched:
-            return -1
-        default:
-            return 0
-        }
-    }))  // Sort movies by the time they were last watched
+    .map(movies => movies.sort((a, b) => a.lastWatched - b.lastWatched)) // Sort movies by the time they were last watched
     .map(movies => movies.map(movie => movie.name))  // Take only movie names
     .subscribe(watchOrder => {
         console.log(watchOrder)

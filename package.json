@@ -1,6 +1,6 @@
 {
   "name": "spitfirejs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A tiny reactive data model library",
   "main": "spitfire.js",
   "devDependencies": {
@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "uglifyjs spitfire.js -c -m --source-map url=spitfire.min.js.map -o spitfire.min.js",
-    "test": "istanbul cover _mocha"
+    "test": "istanbul cover _mocha -x test.js"
   },
   "repository": {
     "type": "git",
